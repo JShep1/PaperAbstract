@@ -82,7 +82,7 @@ Fast Multi-Body Simulations of Robots Controlled with Error Feedback}
 \begin{abstract}
 Roboticists modeling control of manipulator and legged robots often  
 assume force/torque-based control using an open-loop model of voltage, hydraulic
-pressure, or pneumatic pressure to actuate torques. This paper shows that such force/torque-based models can lead to stiff differential equations, which are computationally
+pressure, or pneumatic pressure to actuate torques. This work shows that such force/torque-based models can lead to stiff differential equations, which are computationally
 inefficient to solve: relatively small integration steps are necessary to
 ensure stability. 
 
@@ -119,12 +119,12 @@ in their approach.
 %control, inverse kinematics, and planning code, simulations would run several
 %times slower than real-time. 
 
-The present work continues a previous investigation~\cite{Zapolsky:2015} into 
-means to accelerate this process. That work found that exponential energy
-dissipation can be used to increase simulation stability. However, it should be clear
-that excessive dissipation will lead to artifacts (e.g., the robot acts as if
-it is moving through molasses), and we have found it challenging to balance numerical stability and physical fidelity with that approach. The present 
-study started from the observation that simulating robots with few degrees of 
+%The present work continues a previous investigation~\cite{Zapolsky:2015} into 
+%means to accelerate this process. That work found that exponential energy
+%dissipation can be used to increase simulation stability. However, it should be clear
+%that excessive dissipation will lead to artifacts (e.g., the robot acts as if
+%it is moving through molasses), and we have found it challenging to balance numerical stability and physical fidelity with that approach. 
+The present study started from the observation that simulating robots with few degrees of 
 freedom and controlled via error feedback could admit large integration steps. These large integration steps can yield much faster simulations at the expense of lower numerical accuracy.
 Accordingly, this paper tests the following hypotheses: 
   
@@ -153,7 +153,10 @@ Accordingly, this paper tests the following hypotheses:
 Simulation experiments were conducted using the multi-rigid body dynamics library \software{Moby}.  The robots used in the experiments were the UR10 arm (sourced from an existing open source ROS package), see Figure \ref{fig:UR10Arm}, and a floating base quadruped model described in existing work~\cite{Zapolsky:2015}.  The UR10 arm and attached prismatic manipulator, together, possess eight degrees-of-freedom (DoF), all controllable. The quadruped model possesses 18 DoF, 12 of which are controllable.
 
 \begin{figure}[H]
-\includegraphics[width=\linewidth]{UR10Arm.png}
+
+\begin{center}
+\includegraphics[scale=0.30]{UR10Arm.png}
+\end{center}
 \caption{The UR10 arm with attached prismatic gripper in simulation.\label{fig:UR10Arm}}
 \end{figure}
 For control testing, the UR10 was directed to follow a sinusoidal motion at each joint. The desired joint angles set for each joint across time were a function of sine so the desired trajectory across each joint is sinusoidal. Each simulation was run for five seconds of virtual time.
@@ -166,10 +169,9 @@ Integration steps were limited, albeit arbitrarily, to a maximum of $0.1$s. The 
 
 \subsection{Testing Hypothesis 1: incorporating inverse dynamics control leads to more stable simulations than error feedback control}
 
-A PD-controlled UR10 arm served as one experimental control for Hypothesis~1. The maximum step size we attained using this controller without the simulation becoming unstable was $0.001$. On the other hand, we found that we could simulate the UR10 arm stably without any controls applied (i.e., the robot falls under the influence of gravity) with a step size of $0.1$ (the maximum tested).
+A PD-controlled UR10 arm served as one experimental control for Hypothesis~1. The maximum step size we attained using this controller without the simulation becoming unstable was $0.001$. On the other hand, we found that we could simulate the UR10 arm stably without any controls applied (i.e., the robot falls under the influence of gravity) with a step size of $0.1$. An experimental control in a second experiment used the quadrupedal robot model driven by PD control. 
 % \emph{This result indicates that the PD control introduces stiffness into the differential equations}; this result is not surprising given that \1 PD control can be viewed as a virtual spring damper and \2 the mass-spring system is the canonical example of a stiff ordinary differential equation~\cite{Hairer:1996}. For the experimental variable, we used the standard recursive Newton-Euler Algorithm~\cite{Featherstone:1987} to generate inverse dynamics torques.
 
-An experimental control in a second experiment used the quadrupedal robot model driven by PD control. 
 %We used the non-complementarity-based inverse dynamics control approach described in~\cite{Zapolsky:2015c}, which was necessary since one or more links of the robot remained in contact with the environment, as our experimental variable. Tables~\ref{table:quad}~and~\ref{table:UR10} list the results from the experiments with both robots: inverse dynamics control allows the simulations to run 500\% and 5480\% faster, respectively.
 
 
@@ -234,8 +236,6 @@ It is clear that important work still remains, particularly in finding a computa
 %\end{tabular}
 %\caption{* The ID constraint controller ran the fastest across all timesteps.}
 %\end{figure}
-\section*{Acknowledgements}
-This work was supported by ARO grant W911NF-16-1-0118 and by a GWU SEAS SUPER fellowship to John Shepherd.
 
 \bibliographystyle{abbrv}
 \bibliography{paper}
