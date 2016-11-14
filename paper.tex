@@ -159,12 +159,11 @@ Simulation experiments were conducted using the multi-rigid body dynamics librar
 \end{center}
 \caption{The UR10 arm with attached prismatic gripper in simulation.\label{fig:UR10Arm}}
 \end{figure}
-For control testing, the UR10 was directed to follow a sinusoidal motion at each joint. The desired joint angles set for each joint across time were a function of sine so the desired trajectory across each joint is sinusoidal. Each simulation was run for five seconds of virtual time.
-
+For control testing, the UR10 was directed to follow a sinusoidal motion at each joint. %The desired joint angles set for each joint across time were a function of sine so the desired trajectory across each joint is sinusoidal. Each simulation was run for five seconds of virtual time.
 A PD control was used in these experiments, and the gains for the control were tuned by a two-part process consisting of manual tuning followed by nonlinear optimization. The gains were tuned in this way to eliminate human bias to the greatest extent possible. 
 
 %Where applicable, our experiments use inverse dynamics-based algorithms that \emph{can} account for torque limits---the ones described in this paper, not~\cite{Zapolsky:2015c}---even though torque limits are set to $\pm \infty$ (i.e., unused). This decision allowed us to study the computational properties of these methods without focusing on whether our virtual robots would possess the actuator forces necessary to complete tasks.
-Integration steps were limited, albeit arbitrarily, to a maximum of $0.1$s. The initial integration step size tested for each model was $0.001$, a value that we confirmed produced stable simulations of each model readily. Step sizes were doubled until instability resulted---at which point bisection search was conducted to identify an approximate maximum stable step size---or the maximum value of $0.1$s was reached.
+Integration steps were limited, albeit arbitrarily, to a maximum of $0.1$s. The initial integration step size tested for each model was $0.001$, a value that we confirmed produced stable simulations of each model readily. Step sizes were doubled until instability resulted.%---at which point bisection search was conducted to identify an approximate maximum stable step size---or the maximum value of $0.1$s was reached.
 
 
 \subsection{Testing Hypothesis 1: incorporating inverse dynamics control leads to more stable simulations than error feedback control}
@@ -175,13 +174,13 @@ A PD-controlled UR10 arm served as one experimental control for Hypothesis~1. Th
 %We used the non-complementarity-based inverse dynamics control approach described in~\cite{Zapolsky:2015c}, which was necessary since one or more links of the robot remained in contact with the environment, as our experimental variable. Tables~\ref{table:quad}~and~\ref{table:UR10} list the results from the experiments with both robots: inverse dynamics control allows the simulations to run 500\% and 5480\% faster, respectively.
 
 
-In both experiments, the ID control was able to achieve a higher timestep than the PD control. Figure~\ref{fig:pos_error} (a) shows that during the quadruped experiment, the ID control was able to achieve a maximum stable timestep of 0.004. The PD control, on the other hand was only able to achieve a maximum timestep of 0.001. Part (b) shows the ID control being able to achieve a timestep of 0.05 when the sinusoidal motion was run on the UR10 arm.  PD control was still only able to achieve a maximum step size of 0.001.  The large increase of timestep with regards to the ID control from the quadruped experiment to the UR10 experiment is likely due to the fact that the quadruped actually experiences contact in its controlled motion, while the UR10 experiences no contact.
+In both experiments, the ID control was able to achieve a higher timestep than the PD control. Figure~\ref{fig:pos_error} (a) shows that during the quadruped experiment, the ID control was able to achieve a maximum stable timestep of 0.004. The PD control, on the other hand was only able to achieve a maximum timestep of 0.001. Part (b) shows the ID control being able to achieve a timestep of 0.05 when the sinusoidal motion was run on the UR10 arm.  PD control was still only able to achieve a maximum step size of 0.001.  %The large increase of timestep with regards to the ID control from the quadruped experiment to the UR10 experiment is likely due to the fact that the quadruped actually experiences contact in its controlled motion, while the UR10 experiences no contact.
 
 \subsection{Testing Hypothesis 2: incorporating inverse dynamics constraints leads to more stable simulations than using inverse dynamics control}
 \label{section:hypo2}
 
 
-Hypothesis~2 arose from our observations about the split nature of the control-simulation process: we speculated that solving for the next velocity subject to all constraints would yield higher greater simulation stability than feeding the inverse dynamics torques into the simulator's constraint solver. 
+%Hypothesis~2 arose from our observations about the split nature of the control-simulation process: we speculated that solving for the next velocity subject to all constraints would yield higher greater simulation stability than feeding the inverse dynamics torques into the simulator's constraint solver. 
 
 We used the inverse dynamics controllers employed as the experimental variables in our tests of Hypothesis~1 as the experimental controls in our tests of Hypothesis~2. For the variables in this experiment, we tested the UR10 arm and the quadrupedal robot. We also tested the quadrupedal robot using an experimental, optimization-based constraint solver. 
 
@@ -197,9 +196,7 @@ Claude Lacoursi\`{e}re suggested in personal communication that adding gearing t
 
 \section{Discussion}
 
-We have demonstrated the capability of inverse dynamics to dramatically speed multi-rigid body simulations with contact.  In our experiments, the maximum stable integration step sizes were tens or hundreds of times larger, thereby permitting much faster simulations.
-
-We have shown that incorporating constraints into the constraint solver for control is less likely to cause simulation instability. We believe that the explanation for the stability decrease by feeding the inverse dynamics forces/torques into the simulation is due to very slight discrepancies in inputs. Our prior work~\cite{Zapolsky:2015c}, which demonstrates high, although imperfect tracking accuracy for inverse dynamics of simulated robots, hints at this phenomenon. 
+We have demonstrated the capability of inverse dynamics to dramatically speed multi-rigid body simulations with contact.  In our experiments, the maximum stable integration step sizes were tens or hundreds of times larger, thereby permitting much faster simulations.  We have also shown that incorporating constraints into the constraint solver for control is less likely to cause simulation instability. %We believe that the explanation for the stability decrease by feeding the inverse dynamics forces/torques into the simulation is due to very slight discrepancies in inputs. %Our prior work~\cite{Zapolsky:2015c}, which demonstrates high, although imperfect tracking accuracy for inverse dynamics of simulated robots, hints at this phenomenon. 
 
 It is clear that important work still remains, particularly in finding a computationally tractable model that produces reasonably accurate contact forces and satisfies inverse dynamics constraints as well as force/torque limits. In the meantime, adding gearing to robots with electromagnetic actuators can provide the requisite simulation stability necessary for high frequency (realtime and above) simulation, albeit with far lower tracking accuracy.
 
